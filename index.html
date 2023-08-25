@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style>
+        *{
+            padding: 0; margin: 0; box-sizing: border-box; background-color: rgb(11, 12, 12);
+        }
+        .main{
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            text-align: center;
+        }
+
+        h1{
+            color: white;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            padding-top: 100px;
+        }
+
+            h2{
+                color: white;
+                font-size: large;
+                padding: 30px 100px;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+                
+            }
+
+            textarea{
+                height: 150px;
+                width: 500px;
+                color: white;
+                border: 2px solid yellowgreen;
+               
+            }
+
+            ::placeholder{
+                color: white;
+            }
+
+            button{
+                margin-top: 10px;
+                padding: 8px 15px;
+                color: white;
+                background-color: rgb(132, 109, 77);
+                border-radius: 5px;
+                border: none;
+
+            }
+        
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="top">
+            <h1>Welcome To Typing Speed Game</h1>
+            <h2 id="caption"></h2>
+            <textarea id="sentence" placeholder="Start Typing"></textarea><br>
+            <button id="btn">Start</button>
+        </div>
+
+       
+    </div>
+
+    <script>
+        const bulkWords = [ 'The compiler of this work, however, seems to have used a regnal list of the Bernician kings, which differed considerably from most of those found in our early authorities.',
+
+'A few days after the insurrection of the 10th of August, the papers of the Feuillants were seized, and a list was published containing the names of 841 members proclaimed as suspects.',
+'Understand how words are used within the sentence, no matter the structure, and get inspiration for writing your own sentence correctly with the help of these example sentences.',
+'YourDictionary strives to make learning as stress-free as possible, no matter what your age or understanding is. And our sentence examples are no different.',
+'We understand that sometimes the best way to truly understand a new concept is to see it used in an example. With the help of our useful tool, you can be one step ahead with grasping the complexity and workings of English vocabulary.',
+'With an increased understanding of how words can be used, you can make your writing come to life with an arsenal of words of varying difficulties and meanings.',
+'Whether it is simple sentences for those just learning the English language or phrasing for an academic paper, this easy-to-use sentence generator will help you choose your words with confidence.'
+];
+
+const caption = document.getElementById('caption');
+const sentence = document.getElementById('sentence');
+const btn = document.getElementById('btn');
+let StartTime = 0;
+let EndTime = 0;
+const playGame=()=>{
+    let randomNumber = Math.floor(Math.random()*bulkWords.length);
+    caption.innerText = bulkWords[randomNumber];
+    let date = new Date;
+    StartTime = date.getTime();
+    btn.innerText = 'Done';
+    
+
+   
+}
+
+const wordCounter=(str)=>{
+     let response = str.split(" ").length;
+     console.log(response);
+     return response;
+}
+
+const endPlay=()=>{
+    let date = new Date;
+    EndTime = date.getTime();
+    let TotalTime = ((EndTime-StartTime)/1000);
+    
+    let totalWords = sentence.value;
+    let wordCount = wordCounter(totalWords);
+    let speed = Math.round((wordCount/TotalTime)*60);
+    let finalScore = 'Your Typing Speed was' + " " +speed+ " " + 'Words Per Minute';
+    finalScore+= compareWords(caption.innerText, totalWords);
+    caption.innerText = finalScore;
+   
+}
+
+const compareWords = (str1,str2) =>{
+    let words1 = str1.split(" ");
+    let words2 = str2.split(" ");
+    let count = 0;
+
+    words1.forEach(function(value, index) {
+        if ( value == words2[index]){
+            count++;
+        }
+    })
+
+    let errorWords = (words1.length - count);
+    return ('.' + ' '  + count + " " + 'correct out of ' + " "+ words2.length + " " + 'words and the total number of errors are'
+    + " " + errorWords + '.');
+
+   
+}
+
+
+btn.addEventListener('click', function(){
+    if(this.innerText== 'Start'){
+            sentence.disabled=false;
+            playGame();
+    }
+    else if(this.innerText=='Done'){
+        sentence.disabled=true;
+        btn.innerText ='Start';
+        endPlay();
+    }
+})
+    </script>
+  </body>
+  </html>
